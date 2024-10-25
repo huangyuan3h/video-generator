@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "video-generator"
+version = "0.1.0"
+description = ""
+authors = ["Yuan Huang <huangyuan3h@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+dynaconf = "^3.2.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
