@@ -2,6 +2,9 @@
 
 ## environment
 
+
+### create virtual environment
+
 ```zsh
 
 ## create a new environment
@@ -14,4 +17,17 @@ conda activate video-generator
 conda deactivate
 ```
 
-the
+
+### install  ffmpeg 
+
+```shell
+    brew install ffmpeg # macOS
+	sudo apt-get install ffmpeg # ubuntu
+```
+
+### install whisper
+
+check： https://github.com/openai/whisper
+
+
+
