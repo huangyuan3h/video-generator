@@ -1,7 +1,7 @@
 from dynaconf import Dynaconf
 
 settings = Dynaconf(
-    settings_files=["settings.toml"],
+    settings_files=["settings.example.toml"],
 )
 
 
