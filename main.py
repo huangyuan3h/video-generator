@@ -1,22 +1,19 @@
 import asyncio
-import tempfile
 
-from process.subtitle import text_to_voice, transcribe_audio_from_bytes, generate_srt
+from task.subtitle import generate_srt_by_task_id
+from task.task import create_new_task
+from task.tts import text_to_speech
 
 text_content = "Hello, this is a test. we need to generate some text here."
 voice_option = "en-CA-LiamNeural"
 
 
-async def generate_subtitle():
-    communicate = text_to_voice(text_content, voice_option)
-
-    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-        await communicate.save(temp_file.name)
-
-        temp_file.seek(0)
-        audio_bytes = temp_file.read()
-        transcribed = transcribe_audio_from_bytes(audio_bytes)
-        srt = generate_srt(transcribed)
 
 
-asyncio.run(generate_subtitle())
+
+taskId = create_new_task()
+print(taskId)
+asyncio.run(text_to_speech(text_content,voice_option, taskId))
+generate_srt_by_task_id(taskId)
+
+
