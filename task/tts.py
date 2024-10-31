@@ -3,6 +3,7 @@ import os
 import edge_tts
 
 from task.utils import get_audio_path
+from mutagen.mp3 import MP3
 
 
 async def text_to_speech(text: str, voice: str, task_id):
@@ -16,3 +17,10 @@ async def text_to_speech(text: str, voice: str, task_id):
     """
     communicate = edge_tts.Communicate(text, voice)
     await communicate.save(get_audio_path(task_id))
+
+
+def get_mp3_duration(task_id: str):
+    file_path = get_audio_path(task_id)
+    audio = MP3(file_path)
+    duration = audio.info.length
+    return duration

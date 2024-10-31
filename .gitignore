@@ -163,4 +163,4 @@ cython_debug/
 
 tasks/
 
-settings.example.toml
+settings.toml

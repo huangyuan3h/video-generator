@@ -1,32 +1,19 @@
-
 from context import settings
-from langchain.llms import GooglePalm
-from google.generativeai.types import SafetySetting, HarmCategory, HarmBlockThreshold
-
-google_gemini_api_key = settings.get("google_gemini_api_key")
 
 
-safety_settings = [
-    {
-        "category": HarmCategory.HARM_CATEGORY_HARASSMENT,
-        "threshold": HarmBlockThreshold.BLOCK_NONE,  # Or BLOCK_LOW, BLOCK_MEDIUM, BLOCK_HIGH
-    },
-    {
-        "category": HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-        "threshold": HarmBlockThreshold.BLOCK_NONE,
-    },
-    {
-        "category": HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-        "threshold": HarmBlockThreshold.BLOCK_NONE,
-    },
-    {
-        "category": HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-        "threshold": HarmBlockThreshold.BLOCK_NONE,
-    },
-]
+def get_llm_client():
+    llm_provider = settings.get("llm_provider")
+    if llm_provider == "gemini":
 
-llm = GooglePalm(
-                 temperature=settings.get("temperature", 0.2),  # Optional: Temperature setting
-                 api_key=google_gemini_api_key
+        import google.generativeai as genai
+        google_gemini_api_key = settings.get("google_gemini_api_key")
+        genai.configure(api_key=google_gemini_api_key)
+        model = genai.GenerativeModel("gemini-1.5-flash", safety_settings=[
+                {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+                {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
+                {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"},
+                {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
+            ])
+        return model
 
-                 )
+    return None
