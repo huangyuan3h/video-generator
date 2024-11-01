@@ -1,9 +1,11 @@
 from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.editor import VideoFileClip, concatenate_videoclips, AudioFileClip, TextClip, ImageClip, CompositeVideoClip
-import pysrt
+
+from task.utils import get_font_path
 
 
-def merge_videos_with_background_music_and_overlays(video_paths, music_path, narration_path, output_path, subtitles=None,
+def merge_videos_with_background_music_and_overlays(video_paths, music_path, narration_path, output_path,
+                                                    subtitles=None,
                                                     intro_image_path=None):
     """
     Merges videos with background music, narration, intro image, and optional subtitles from an SRT file.
@@ -41,14 +43,18 @@ def merge_videos_with_background_music_and_overlays(video_paths, music_path, nar
 
         # Step 6: 添加字幕
         if subtitles:
-            subtitle_clips = [
-                TextClip(sub['text'], fontsize=24, color='white', bg_color='black')
-                .set_position(('center', 'bottom'))
-                .set_start(sub['start'])
-                .set_duration(sub['duration'])
-                for sub in subtitles
-            ]
-            main_video = CompositeVideoClip([main_video, *subtitle_clips])
+            subtitle_clips = []
+            for sub in subtitles:
+                txt_clip = TextClip(sub['text'], fontsize=32, color='white', font=get_font_path('NotoSansSC-Bold.ttf'),
+                                    stroke_width=1.5)
+
+                txt_clip = txt_clip.set_position(('center', main_video.h - 32)).set_start(sub['start']).set_duration(
+                    sub['duration'])
+
+                subtitle_clips.append(txt_clip)
+
+            # 将字幕合成到主视频上
+            main_video = CompositeVideoClip([main_video] + subtitle_clips)
 
         # Step 7: 将背景音乐和旁白音频叠加，并作为视频的音频轨道
         combined_audio = CompositeAudioClip([background_music, narration.set_start(0)])

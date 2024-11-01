@@ -22,9 +22,10 @@ def generate_srt_by_transcribed(transcribed, task_id):
             temp_srt.write(f"{item['text']}\n\n".encode("utf-8"))
 
 
-def transcribe_audio_by_task_id(task_id, model_name="base"):
+def transcribe_audio_by_task_id(task_id, model_name="large", language="zh"):
     model = whisper.load_model(model_name)
-    result = model.transcribe(get_audio_path(task_id))
+    result = model.transcribe(get_audio_path(task_id), language=language)
+
     return result
 
 

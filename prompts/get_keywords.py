@@ -15,4 +15,4 @@ def get_keywords(model, content: str):
     except json.JSONDecodeError as e:
         print("Failed to parse JSON:", e)
 
-    return response_data
+    return response_data["keywords"]
