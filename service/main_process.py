@@ -3,6 +3,7 @@ import asyncio
 
 from llm.llm_client import get_llm_client
 from prompts.get_keywords import get_keywords
+from prompts.translator import translator
 from task.subtitle import generate_srt_by_task_id
 from task.task import create_new_task
 from task.tts import text_to_speech, get_mp3_duration
@@ -35,6 +36,10 @@ def generate_video():
 
     model = get_llm_client()
 
-    keywords = get_keywords(model, text_content)
+    translated_content = translator(model, text_content, "English")
+
+    print(translated_content)
+
+    keywords = get_keywords(model, translated_content)
 
     print(keywords)
