@@ -4,9 +4,12 @@ import asyncio
 from llm.llm_client import get_llm_client
 from prompts.get_keywords import get_keywords
 from prompts.translator import translator
-from task.subtitle import generate_srt_by_task_id
+from task.subtitle import generate_srt_by_task_id, get_subtitle_obj
 from task.task import create_new_task
 from task.tts import text_to_speech, get_mp3_duration
+from task.utils import get_audio_path, get_merged_movie_path, get_srt_path
+from video.merge_video import merge_videos_with_background_music_and_overlays
+from video.pexels import get_videos_by_keywords, get_necessary_random_videos, download_video_list
 
 
 def generate_video():
@@ -28,8 +31,10 @@ def generate_video():
 
     voice_option = "zh-CN-YunxiNeural"
 
+    music_path = "resources/background_music/Owls.mp3"
+
     asyncio.run(text_to_speech(text_content, voice_option, taskId))
-    generate_srt_by_task_id(taskId)
+    subtitle = get_subtitle_obj(taskId)
 
     seconds = get_mp3_duration(taskId)
     print(seconds)
@@ -43,3 +48,22 @@ def generate_video():
     keywords = get_keywords(model, translated_content)
 
     print(keywords)
+
+    video_orientations = ["landscape", "portrait"]
+
+    landscape, portrait = get_videos_by_keywords(video_orientations, keywords)
+
+    landscape = get_necessary_random_videos(landscape, seconds)
+    portrait = get_necessary_random_videos(portrait, seconds)
+
+    landscape_path = download_video_list(landscape)
+
+    print(landscape_path)
+
+    portrait_path = download_video_list(portrait)
+
+
+    # build landscape
+    merge_videos_with_background_music_and_overlays(landscape_path, music_path, narration_path=get_audio_path(taskId),
+                                                    output_path=get_merged_movie_path(taskId), subtitles=subtitle)
+

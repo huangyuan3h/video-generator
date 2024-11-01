@@ -31,3 +31,11 @@ def transcribe_audio_by_task_id(task_id, model_name="base"):
 def generate_srt_by_task_id(task_id, model_name="base"):
     transcribed = transcribe_audio_by_task_id(task_id, model_name)
     generate_srt_by_transcribed(transcribed, task_id)
+
+
+def get_subtitle_obj(task_id, model_name="base"):
+    transcribed = transcribe_audio_by_task_id(task_id, model_name)
+    subtitles = []
+    for item in transcribed["segments"]:
+        subtitles.append({"text": item['text'], "start": item['start'], "duration": item['end'] - item['start']})
+    return subtitles

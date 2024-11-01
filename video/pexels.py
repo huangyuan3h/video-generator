@@ -1,3 +1,4 @@
+import os
 import random
 
 import context
@@ -89,3 +90,47 @@ def get_necessary_random_videos(videos, seconds):
             video_list.append(v)
 
     return video_list
+
+
+def download_mp4(url: str, output_path: str):
+    """
+    Downloads an MP4 file from a given URL and saves it to the specified output path.
+
+    Args:
+        url (str): The URL of the MP4 file.
+        output_path (str): The file path where the MP4 file will be saved.
+    """
+    try:
+        response = requests.get(url, stream=True)
+        response.raise_for_status()  # Check for request errors
+
+        with open(output_path, 'wb') as file:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    file.write(chunk)
+
+        print(f"Download complete: {output_path}")
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error downloading file: {e}")
+
+
+def download_video(video):
+    id = video["id"]
+    width = video["width"]
+    height = video["height"]
+    duration = video["duration"]
+    url = video["link"]
+    base_dir = "resources/pexels"
+    path = os.path.join(base_dir, f"{id}_{width}x{height}_{duration}s.mp4")
+
+    if os.path.isfile(path):
+        return path
+
+    download_mp4(url, path)
+
+    return path
+
+
+def download_video_list(videos):
+    return list(map(download_video, videos))
