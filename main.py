@@ -1,3 +1,4 @@
+from service.main_process import generate_video
 from task.images.cover_image import build_cover_image
 from task.images.pexels import search_photo_by_keyword
 
@@ -17,8 +18,8 @@ text = """
 在移民加拿大的过程中，诚信与合法是不可或缺的基石。
 """
 
-build_cover_image("2019年魁北克PEQ变政：一场失败的变革", "https://example.com", "canada", "KJJ7p_ax-c",
-                  orientation="landscape")
+
+generate_video(text, title="外籍员工自付工资，虚假职位骗取身份")
 
 # 示例调用
 # create_video_cover("2019年魁北克PEQ变政：一场失败的变革", "https://example.com", "cover.jpg", orientation="landscape")

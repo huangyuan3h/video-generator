@@ -17,6 +17,7 @@ def merge_videos_with_background_music_and_overlays(video_paths, music_path, nar
         output_path (str): Path to save the final video.
         srt_path (str): Path to the SRT subtitle file.
         intro_image_path (str): Path to an intro image that appears at the beginning.
+        :param subtitles:
     """
     try:
         # Step 1: 加载视频片段并去除原始音频

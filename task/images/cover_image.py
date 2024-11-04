@@ -22,7 +22,7 @@ def create_video_cover(title, qr_text, output_path="cover.jpg", orientation="lan
     title_font = ImageFont.truetype("resources/fonts/NotoSansSC-Bold.ttf", 60)  # 根据需要更换字体
 
     # 根据封面宽度自动换行
-    max_width = width - 200  # 留出左右100像素边距
+    max_width = width - 300  # 留出左右150像素边距
     wrapped_title = []
     for line in title.split('\n'):
         wrapped_title.extend(textwrap.wrap(line, width=int(max_width / title_font.getbbox('A')[2])))

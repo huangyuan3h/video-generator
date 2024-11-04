@@ -27,27 +27,23 @@ def search_video_by_keyword(query: str, size="medium", orientation='landscape'):
         return None
 
 
-def get_videos_by_keywords(video_orientations: [str], keywords: [str]):
+def get_videos_by_keywords(keywords: [str], orientation='landscape'):
     """
 
-    :param video_orientations: ["landscape", "portrait"]
+    :param orientation: "landscape"/"portrait"
     :param keywords:
     :return:
     """
-    landscape = []
-    portrait = []
+    result = []
 
-    for orientation in video_orientations:
-        for keyword in keywords:
-            res = search_video_by_keyword(keyword, size="medium", orientation=orientation)
-            if orientation == "landscape":
-                landscape = landscape + res["videos"]
-            elif orientation == "portrait":
-                portrait = portrait + res["videos"]
+    for keyword in keywords:
+        res = search_video_by_keyword(keyword, size="medium", orientation=orientation)
 
-    landscape = map_the_video_file(landscape, "landscape")
-    portrait = map_the_video_file(portrait, "portrait")
-    return landscape, portrait
+        result = result + res["videos"]
+
+    result = map_the_video_file(result, orientation)
+
+    return result
 
 
 def is_landscape_size(video):

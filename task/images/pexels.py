@@ -39,7 +39,7 @@ def search_photo_by_keyword(query: str, size="medium", orientation="landscape", 
 
 
 def get_top_photo(query, orientation="landscape"):
-    result = search_photo_by_keyword(query, orientation, color="gray")
+    result = search_photo_by_keyword(query, orientation, color="black")
     top_photo = result["photos"][0]
     url = top_photo["src"][orientation]
     return url
