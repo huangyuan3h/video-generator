@@ -1,6 +1,24 @@
+from task.images.cover_image import build_cover_image
+from task.images.pexels import search_photo_by_keyword
 
-from service.main_process import generate_video
+# generate_video()
 
 
+text = """
+加拿大国家媒体CBC近日曝光了一起涉及“LMIA雇主担保”的欺诈案，一家全国性餐饮公司被控在聘用外籍员工时存在欺诈行为。来自印度的一名员工透露，
+为了获得工作许可和永久居留权，他被迫参与雇主安排的“工资循环”骗局——每月用现金支付约3,000加元，然后返还至他的银行账户，并收到工资单以证明就业资格。加拿大边境服务局将此安排视为“工资循环”，认定为虚假陈述的形式。
 
-generate_video()
+根据《移民和难民保护法》（IRPA），这种工资循环操作被视为非法，雇主和员工都可能面临法律后果，包括最高10万加元的罚款及五年监禁。
+此外，CBC调查还发现，一些移民顾问以高额费用承诺帮助外籍劳工获取永久居留身份，收取所谓的“LMIA批准费”，提供真实或虚假职位及虚假的工资单、税单作为联邦当局的就业证明。
+
+移民专家表示，许多外籍劳工可能并未意识到此类操作的违法性，但他们可能为此付出沉重代价，包括经济损失甚至被驱逐出境的风险。
+这一案件警示了计划通过LMIA雇主担保移民的申请人，务必慎重选择雇主和顾问，避免落入欺诈陷阱。建议寻求合法途径，通过信誉良好的雇主和专业移民顾问了解相关法律法规，确保文件真实合法，切勿因急于获得身份而铤而走险。
+
+在移民加拿大的过程中，诚信与合法是不可或缺的基石。
+"""
+
+build_cover_image("2019年魁北克PEQ变政：一场失败的变革", "https://example.com", "canada", "KJJ7p_ax-c",
+                  orientation="landscape")
+
+# 示例调用
+# create_video_cover("2019年魁北克PEQ变政：一场失败的变革", "https://example.com", "cover.jpg", orientation="landscape")

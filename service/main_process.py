@@ -4,12 +4,12 @@ import asyncio
 from llm.llm_client import get_llm_client
 from prompts.get_keywords import get_keywords
 from prompts.translator import translator
-from task.subtitle import generate_srt_by_task_id, get_subtitle_obj
+from task.subtitle import get_subtitle_obj
 from task.task import create_new_task
 from task.tts import text_to_speech, get_mp3_duration
-from task.utils import get_audio_path, get_merged_movie_path, get_srt_path
-from video.merge_video import merge_videos_with_background_music_and_overlays
-from video.pexels import get_videos_by_keywords, get_necessary_random_videos, download_video_list
+from task.utils import get_audio_path, get_merged_movie_path
+from task.video.merge_video import merge_videos_with_background_music_and_overlays
+from task.video.pexels import get_videos_by_keywords, get_necessary_random_videos, download_video_list
 
 
 def generate_video():
@@ -65,5 +65,8 @@ def generate_video():
 
     # build landscape
     merge_videos_with_background_music_and_overlays(landscape_path, music_path, narration_path=get_audio_path(taskId),
-                                                    output_path=get_merged_movie_path(taskId), subtitles=subtitle)
+                                                    output_path=get_merged_movie_path(taskId,"landscape"), subtitles=subtitle)
+
+    merge_videos_with_background_music_and_overlays(portrait_path, music_path, narration_path=get_audio_path(taskId),
+                                                    output_path=get_merged_movie_path(taskId, "portrait"), subtitles=subtitle)
 
