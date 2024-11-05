@@ -7,7 +7,7 @@ from task.images.pexels import get_top_photo
 from task.utils import get_image_path
 
 
-def create_video_cover(title, qr_text, output_path="cover.jpg", orientation="landscape", background_image_path=None):
+def create_video_cover(title, qr_text=None, output_path="cover.jpg", orientation="landscape", background_image_path=None):
     # 封面尺寸设置
     width, height = (1280, 720) if orientation == "landscape" else (720, 1280)
 
@@ -28,8 +28,8 @@ def create_video_cover(title, qr_text, output_path="cover.jpg", orientation="lan
         wrapped_title.extend(textwrap.wrap(line, width=int(max_width / title_font.getbbox('A')[2])))
 
     # 计算多行文本总高度以居中
-    total_text_height = sum([title_font.getbbox(line)[3] - title_font.getbbox(line)[1] for line in wrapped_title]) + (
-            len(wrapped_title) - 1) * 10  # 行间距10
+    line_height = title_font.getbbox('A')[3] - title_font.getbbox('A')[1]
+    total_text_height = len(wrapped_title) * line_height + (len(wrapped_title) - 1) * 10  # 行间距10
     current_y = (height - total_text_height) // 2  # 竖直方向居中
 
     # 绘制多行文本
@@ -37,19 +37,20 @@ def create_video_cover(title, qr_text, output_path="cover.jpg", orientation="lan
         line_width = title_font.getbbox(line)[2] - title_font.getbbox(line)[0]
         line_x = (width - line_width) // 2
         draw.text((line_x, current_y), line, font=title_font, fill="white")
-        current_y += title_font.getbbox(line)[3] - title_font.getbbox(line)[1] + 10  # 行间距10像素
+        current_y += line_height + 50  # 行间距10像素
 
     # 生成二维码
-    qr = qrcode.QRCode(box_size=10, border=2)
-    qr.add_data(qr_text)
-    qr.make(fit=True)
-    qr_img = qr.make_image(fill="black", back_color="white").convert("RGB")
+    if qr_text:
+        qr = qrcode.QRCode(box_size=10, border=2)
+        qr.add_data(qr_text)
+        qr.make(fit=True)
+        qr_img = qr.make_image(fill="black", back_color="white").convert("RGB")
 
-    # 调整二维码大小并粘贴到封面
-    qr_size = 150  # 二维码大小
-    qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
-    qr_position = (width - qr_size - 30, height - qr_size - 30)  # 右下角位置，留 30 像素边距
-    cover.paste(qr_img, qr_position)
+        # 调整二维码大小并粘贴到封面
+        qr_size = 150  # 二维码大小
+        qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
+        qr_position = (width - qr_size - 30, height - qr_size - 30)  # 右下角位置，留 30 像素边距
+        cover.paste(qr_img, qr_position)
 
     # 保存封面图像
     cover.save(output_path)

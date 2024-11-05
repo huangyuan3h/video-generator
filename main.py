@@ -1,6 +1,6 @@
 from context.Context import VideoParameter
 from service.main_process import generate_video
-
+from task.images.cover_image import create_video_cover
 
 # generate_video()
 
@@ -29,7 +29,8 @@ text = """
 10月份强劲的销量为市场带来了复苏的迹象，但GVR提醒，单月数据不足以判断长期趋势。目前市场保持平衡，联排与公寓市场逐步偏向卖方，价格趋稳但波动仍可能继续。随着利率的持续下降和市场需求的回升，预计未来大温哥华地区的房市将继续保持稳定发展。
 """
 
-params = VideoParameter(content=text)
+params = VideoParameter(content=text, qr_url="https://north-path.it-t.xyz")
 
 generate_video(params)
+
 
