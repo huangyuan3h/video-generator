@@ -1,8 +1,7 @@
-
 from task.utils import get_font_path
+from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips, CompositeVideoClip, CompositeAudioClip, \
+    TextClip, ImageClip
 
-
-from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips, CompositeVideoClip, CompositeAudioClip, TextClip, ImageClip
 
 def merge_videos_with_background_music_and_overlays(video_paths, music_path, narration_path, output_path,
                                                     subtitles=None,
@@ -35,9 +34,9 @@ def merge_videos_with_background_music_and_overlays(video_paths, music_path, nar
         final_duration = min(narration.duration, background_music.duration)
         main_video = main_video.set_duration(final_duration)
 
-        # Step 6: Create an intro image clip (displayed for 0.2 seconds)
+        # Step 6: Create an intro image clip (displayed for 0.5 seconds)
         if intro_image_path:
-            intro_image = ImageClip(intro_image_path).set_duration(0.2)
+            intro_image = ImageClip(intro_image_path).set_duration(0.5)
             intro_image = intro_image.set_fps(main_video.fps)
             clips.insert(0, intro_image)  # Insert intro image at the beginning of the clip list
             main_video = concatenate_videoclips(clips, method="compose")
@@ -56,19 +55,20 @@ def merge_videos_with_background_music_and_overlays(video_paths, music_path, nar
                 else:
                     subtitle_position = ('center', main_video.h - 64)  # Position near the bottom for landscape
 
-                txt_clip = txt_clip.set_position(subtitle_position).set_start(sub['start']).set_duration \
-                    (sub['duration'])
+                txt_clip = txt_clip.set_position(subtitle_position).set_start(sub['start']).set_duration(sub['duration'])
                 subtitle_clips.append(txt_clip)
 
             # Overlay subtitles on the main video
             main_video = CompositeVideoClip([main_video] + subtitle_clips)
 
         # Step 8: Combine background music and narration as the audio track for the video
-        combined_audio = CompositeAudioClip \
-            ([background_music.set_duration(final_duration), narration.set_duration(final_duration)])
+        combined_audio = CompositeAudioClip([background_music.set_duration(final_duration), narration.set_duration(final_duration)])
         main_video = main_video.set_audio(combined_audio)
 
-        # Step 9: Export the final video
+        # Step 9: Force the final video duration to match the audio
+        main_video = main_video.set_duration(final_duration)
+
+        # Step 10: Export the final video
         main_video.write_videofile(output_path, codec="libx264", audio_codec="aac")
 
         print(f"Video successfully merged and saved to: {output_path}")
