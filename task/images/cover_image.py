@@ -7,7 +7,8 @@ from task.images.pexels import get_top_photo
 from task.utils import get_image_path
 
 
-def create_video_cover(title, qr_text=None, output_path="cover.jpg", orientation="landscape", background_image_path=None):
+def create_video_cover(title, qr_text=None, output_path="cover.jpg", orientation="landscape",
+                       background_image_path=None, icon_path=None):
     # 封面尺寸设置
     width, height = (1280, 720) if orientation == "landscape" else (720, 1280)
 
@@ -36,8 +37,8 @@ def create_video_cover(title, qr_text=None, output_path="cover.jpg", orientation
     for line in wrapped_title:
         line_width = title_font.getbbox(line)[2] - title_font.getbbox(line)[0]
         line_x = (width - line_width) // 2
-        draw.text((line_x, current_y), line, font=title_font, fill="white")
-        current_y += line_height + 50  # 行间距10像素
+        draw.text((line_x, current_y), line, font=title_font, fill="white", stroke_fill="black", stroke_width=2)
+        current_y += line_height + 10  # 行间距10像素
 
     # 生成二维码
     if qr_text:
@@ -50,6 +51,21 @@ def create_video_cover(title, qr_text=None, output_path="cover.jpg", orientation
         qr_size = 150  # 二维码大小
         qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
         qr_position = (width - qr_size - 30, height - qr_size - 30)  # 右下角位置，留 30 像素边距
+
+        # 如果指定了图标路径，则加载图标并放置在二维码中心
+        if icon_path:
+            icon = Image.open(icon_path).convert("RGBA")
+            icon_size = qr_size // 4  # 图标大小设为二维码的四分之一
+            icon = icon.resize((icon_size, icon_size), Image.LANCZOS)
+
+            # 计算图标在二维码中心的位置
+            icon_position = (
+                (qr_img.width - icon_size) // 2,
+                (qr_img.height - icon_size) // 2
+            )
+            qr_img.paste(icon, icon_position, icon)  # 使用透明度通道粘贴图标
+
+        # 将二维码（带图标）粘贴到封面上
         cover.paste(qr_img, qr_position)
 
     # 保存封面图像
@@ -80,9 +96,10 @@ def download_image(image_url, save_path):
         print(f"An error occurred: {e}")
 
 
-def build_cover_image(title,qr_text,  query, task_id, orientation="landscape"):
+def build_cover_image(title, qr_text, query, task_id, orientation="landscape", icon_path=None):
     url = get_top_photo(query, orientation)
     photo_path = get_image_path(task_id, orientation)
     download_image(url, photo_path)
 
-    create_video_cover(title, qr_text, output_path=photo_path, orientation=orientation, background_image_path=photo_path)
+    create_video_cover(title, qr_text, output_path=photo_path, orientation=orientation,
+                       background_image_path=photo_path, icon_path=icon_path)

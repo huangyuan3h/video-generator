@@ -26,3 +26,7 @@ def get_font_path(name: str) -> str:
 
 def get_image_path(task_id: str, orientation='landscape') -> str:
     return os.path.join(get_task_folder(task_id), f"{orientation}.jpg")
+
+
+def get_text_path(task_id: str) -> str:
+    return os.path.join(get_task_folder(task_id), "title_scripts.txt")

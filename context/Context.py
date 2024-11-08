@@ -12,3 +12,4 @@ class VideoParameter:
     background_music: str = "resources/background_music/Owls.mp3"
     video_orientations = ["landscape", "portrait"]
     qr_url: str = None
+    icon_path: str = None
