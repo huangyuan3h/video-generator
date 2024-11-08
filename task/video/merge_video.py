@@ -47,7 +47,7 @@ def merge_videos_with_background_music_and_overlays(video_paths, music_path, nar
             is_portrait = main_video.h > main_video.w  # Check if the video is in portrait mode
             for sub in subtitles:
                 txt_clip = TextClip(sub['text'], fontsize=32, color='white', font=get_font_path('NotoSansSC-Bold.ttf'),
-                                    stroke_color="#f1f1f1", stroke_width=0.5)
+                                    stroke_color="#f1f1f1", stroke_width=1)
 
                 # Set subtitle position based on orientation
                 if is_portrait:
