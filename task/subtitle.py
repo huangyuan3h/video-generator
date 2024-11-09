@@ -34,9 +34,27 @@ def generate_srt_by_task_id(task_id, model_name="base"):
     generate_srt_by_transcribed(transcribed, task_id)
 
 
-def get_subtitle_obj(task_id, model_name="base"):
+def get_subtitle_obj(task_id, model_name="base", max_text_length=20):
     transcribed = transcribe_audio_by_task_id(task_id, model_name)
     subtitles = []
     for item in transcribed["segments"]:
-        subtitles.append({"text": item['text'], "start": item['start'], "duration": item['end'] - item['start']})
+        text = item['text']
+        start = item['start']
+        duration = item['end'] - item['start']
+
+        # 如果文本长度超过阈值，则将其拆分为两个部分
+        if len(text) > max_text_length:
+            midpoint = len(text) // 2  # 简单地在中间位置拆分
+            first_part = text[:midpoint]
+            second_part = text[midpoint:]
+            half_duration = duration / 2
+
+            # 添加前半部分
+            subtitles.append({"text": first_part, "start": start, "duration": half_duration})
+
+            # 添加后半部分，起始时间为之前的起始时间 + 半个时长
+            subtitles.append({"text": second_part, "start": start + half_duration, "duration": half_duration})
+        else:
+            subtitles.append({"text": text, "start": start, "duration": duration})
+
     return subtitles

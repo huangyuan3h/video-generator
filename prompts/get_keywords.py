@@ -6,7 +6,6 @@ def get_keywords(model, content: str):
     text = """You will receive a piece of content. Based on this content, please provide a list of 5 visually appealing 
     and popular hashtags that are optimized for finding high-quality videos and pictures, 
     even if they are slightly less relevant to the content (though some connection should still be present).
-
     **Return the response in pure JSON format, without any additional text, in the following structure:**
 
     {

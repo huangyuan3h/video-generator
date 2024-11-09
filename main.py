@@ -28,6 +28,7 @@ text = """
 params = VideoParameter(content=text,
                         # qr_url="https://north-path.it-t.xyz",
                         # icon_path="resources/icon/android-chrome-192x192.png"
+                        background_music="resources/background_music/Undercover Vampire.mp3"
                         )
 
 generate_video(params)
