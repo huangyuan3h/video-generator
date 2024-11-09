@@ -33,12 +33,6 @@ def generate_video(params: VideoParameter):
     # save title and scripts
     save_title_scripts(params.title, params.scripts, get_text_path(taskId))
 
-    asyncio.run(text_to_speech(params.scripts, params.voice_option, taskId))
-    subtitle = get_subtitle_obj(taskId)
-
-    seconds = get_mp3_duration(taskId)
-    print(seconds)
-
     translated_content = translator(model, params.scripts, "English")
 
     print(translated_content)
@@ -46,6 +40,12 @@ def generate_video(params: VideoParameter):
     keywords = get_keywords(model, translated_content)
 
     print(keywords)
+
+    asyncio.run(text_to_speech(params.scripts, params.voice_option, taskId))
+    subtitle = get_subtitle_obj(taskId)
+
+    seconds = get_mp3_duration(taskId)
+    print(seconds)
 
     video_orientations = params.video_orientations
 
