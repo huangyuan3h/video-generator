@@ -1,5 +1,6 @@
 from context import settings
 from llm.GoogleGeminiClient import GoogleGeminiClient
+from llm.Moonshot import MoonshotClient
 from llm.OllamaClient import OllamaClient
 
 
@@ -9,5 +10,6 @@ def get_llm_client():
         return GoogleGeminiClient()
     elif llm_provider == "ollama":
         return OllamaClient()
-
+    elif llm_provider == "moonshot":
+        return MoonshotClient()
     return None

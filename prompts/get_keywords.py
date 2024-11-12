@@ -23,6 +23,7 @@ def get_keywords(model, content: str):
     response = model.generate([text, content])
     try:
         response_data = json.loads(response)
+        print(response_data)
     except json.JSONDecodeError as e:
         print("Failed to parse JSON:", e)
 

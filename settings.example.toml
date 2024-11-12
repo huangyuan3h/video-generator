@@ -1,2 +1,16 @@
+
+
 pexel_key = ""
+llm_provider = "" # openai, gemini, ollama, moonshot
+
+## gemini setting
+gemini_model_name = ""
 google_gemini_api_key = ""
+
+## ollama
+ollama_endpoint = ""
+ollama_model_name = ""
+
+## moonshot
+moonshot_model_name = ""
+moonshot_api_key = ""
