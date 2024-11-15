@@ -47,14 +47,14 @@ def merge_videos_with_background_music_and_overlays(video_paths, music_path, nar
             is_portrait = main_video.h > main_video.w  # Check if the video is in portrait mode
             for sub in subtitles:
                 if is_portrait:
-                    txt_clip = TextClip(sub['text'], fontsize=24, color='white',
-                                        font=get_font_path('NotoSansSC-Bold.ttf'),
-                                        stroke_color="#f1f1f1", stroke_width=1)
-                    subtitle_position = ('center', int(main_video.h * 0.75))  # Center and move up slightly for portrait
+                    txt_clip = TextClip(sub['text'], fontsize=28, color='#f5f5f5',
+                                        font=get_font_path('NotoSansSC-Regular.ttf'),
+                                        )
+                    subtitle_position = ('center', int(main_video.h * 0.61))  # Center and move up slightly for portrait
                 else:
-                    txt_clip = TextClip(sub['text'], fontsize=32, color='white',
-                                        font=get_font_path('NotoSansSC-Bold.ttf'),
-                                        stroke_color="#f1f1f1", stroke_width=1)
+                    txt_clip = TextClip(sub['text'], fontsize=32, color='#f5f5f5',
+                                        font=get_font_path('NotoSansSC-Regular.ttf'),
+                                        )
                     subtitle_position = ('center', main_video.h - 64)  # Position near the bottom for landscape
 
                 txt_clip = txt_clip.set_position(subtitle_position).set_start(sub['start']).set_duration(sub['duration'])
