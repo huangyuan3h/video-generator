@@ -12,7 +12,7 @@ class MoonshotClient(LLMClient):
             base_url="https://api.moonshot.cn/v1",
         )
 
-    def generate(self, prompt: [str]):
+    def generate(self, prompt: [str], json=False, response_schema=None):
         moonshot_model_name = settings.get("moonshot_model_name")
         messages = list(map(lambda s: {"role": "user", "content": s}, prompt))
         completion = self.model.chat.completions.create(

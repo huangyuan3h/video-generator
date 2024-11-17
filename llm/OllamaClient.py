@@ -11,7 +11,7 @@ class OllamaClient(LLMClient):
         self.endpoint = ollama_endpoint
         self.model_name = ollama_model_name
 
-    def generate(self, prompt: [str]):
+    def generate(self, prompt: [str], json=False, response_schema=None):
         url = f"{self.endpoint}/api/chat"
         messages = [{"role": "user", "content": p} for p in prompt]
         payload = {

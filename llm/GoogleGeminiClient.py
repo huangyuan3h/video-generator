@@ -16,6 +16,12 @@ class GoogleGeminiClient(LLMClient):
             {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
         ])
 
-    def generate(self, prompt: [str]):
-        response = self.model.generate_content(prompt)
+    def generate(self, prompt: [str], json=False, response_schema=None):
+        import google.generativeai as genai
+        generation_config = None
+        if json:
+            generation_config = genai.GenerationConfig(
+                response_mime_type="application/json", response_schema=response_schema
+            )
+        response = self.model.generate_content(prompt, generation_config=generation_config)
         return response.text
